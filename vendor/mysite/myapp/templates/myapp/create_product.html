@@ -1,0 +1,30 @@
+{% extends "myapp/base.html" %}
+    
+
+{% block body %}
+<div class='w-1/2 m-20'>
+    <h1 class="font-semibold text-lg"> Create Product</h1>
+    <form class="p-10 shadow-lg" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="px-4 py-2">
+            <label>Name</label>
+            <div class="border rounded appearance-none py-2 px-2 mr-10">{{ product_form.name }}</div>
+        </div>
+        <div class="px-4 py-2">
+            <label>Description</label>
+            <div class="border rounded appearance-none py-2 px-2 mr-10">{{ product_form.description }}</div>
+        </div>
+        <div class="px-4 py-2">
+            <label>Price</label>
+            <div class="border rounded appearance-none py-2 px-2 mr-10">{{ product_form.price }}</div>
+        </div>
+        <div class="px-4 py-2">
+            <label>Upload File</label>
+            <div class="rounded appearance-none py-2 px-2 mr-10">{{ product_form.file }}</div>
+        </div>
+        <div class="mt-6">
+            <button class="px-5 py-2 mx-4 text-white bg-blue-400" type="submit">Add</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

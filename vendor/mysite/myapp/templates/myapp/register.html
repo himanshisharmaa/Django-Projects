@@ -1,0 +1,40 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+<div class="flex flex-col justify-center items-center min-h-screen">
+    <h1 class="font-bold text-lg">Register🔐</h1>
+    <form class="shadow-lg p-10" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label>Username</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.username}}</div>
+            {{register_form.username.help_text}} {{register_form.username.errors}}
+        </div>
+        <div class="mb-3">
+            <label>Email</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.email}}</div>
+            {{register_form.email.help_text}}{{register_form.email.errors}}
+        </div>
+        <div class="mb-3">
+            <label>First Name</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.first_name}}</div>
+        </div>
+        <div class="mb-3">
+            <label>Last Name</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.last_name}}</div>
+        </div>
+        <div class="mb-3">
+            <label>Password</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.password1}}</div>
+            {{register_form.password1.help_text}}{{register_form.password1.errors}}
+        </div>
+        <div class="mb-3">
+            <label>Confirm Password</label>
+            <div class="border rounded py-2 px-2 mr-10">{{register_form.password2}}</div>{{register_form.password2.errors}}
+        </div>
+       
+        <button class="bg-blue-400 text-white px-4 py-2" type="submit">Register</button>
+        <p class="m-10">Already Registered <a class="text-blue-400 " href="{% url 'login' %}">Click Here</a> to Login</p>
+    </form>
+    
+</div>
+{% endblock %}

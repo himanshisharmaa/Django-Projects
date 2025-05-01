@@ -1,0 +1,33 @@
+{% extends 'users/base.html' %}
+{% block body %}
+    <div class="container  flex items-center justify-center py-2">
+        <h1 class="text-2xl mt-3">👉🏻Register user👈🏻</h1>
+        <form method="post" class="bg-white shadow-md m-10 w-2/5 rounded px-8 pt-6 pb-8 mb-4">
+            {% csrf_token %}
+            <div class="mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10">{{ user_form.username }}</div>
+            </div>
+            <div class="mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ user_form.email }}</div>
+            </div>
+            <div class="mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ user_form.first_name }}</div>
+            </div>
+            <div class="mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ user_form.password }}</div>
+            </div>
+            <div class="mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+                <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ user_form.password2 }}</div>
+            </div>
+            <button class="text-white bg-green-500 px-5 py-2 mt-2 " type="submit">Register</button>
+            <p class="px-10 py-2">Already Registered?  <a class="text-indigo-500" href="{% url 'login' %}">Login Here.</a></p>
+        </form>
+        
+    </div>
+
+{% endblock%}

@@ -1,0 +1,188 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<div class="m-10  font-bold">Add Expense➕</div>
+<form class="shadow-lg m-10 rounded-lg" method="post">
+    {% csrf_token %}
+    <div class="flex form-container px-10 py-10">
+        <div class="mx-10">
+            <div class="mb-5">
+                <label>Expense Name</label>
+            </div>
+            <div class="border">{{ expense_form.name }}</div>
+        </div>
+        <div class="mx-10">
+            <div class="mb-5">
+                <label>Amount</label>
+            </div>
+            <div class="border">{{ expense_form.amount }}</div>
+        </div>
+        <div class="mx-10">
+            <div class="mb-5">
+                <label>Category</label>
+            </div>
+            <div class="border">{{ expense_form.category }}</div>
+        </div>
+        <div class="mx-10 mt-8">
+            <button class="bg-green-500 px-5 py-2 rounded-lg text-white font-bold" type="submit">Add</button>
+        </div>
+    </div>
+</form>
+
+<div class="m-10  font-bold">Expenses💰</div>
+
+<div class="shadow-lg m-7 rounded-lg">
+    <!-- Header row -->
+    <div class="expense-header flex px-20 py-2 items-center space-x-40 font-bold">
+        <span>#</span>
+        <span>Name</span>
+        <span>Amount</span>
+        <span>Category</span>
+        <span>Date</span>
+        <span>Edit</span>
+        <span>Delete</span>
+    </div>
+    <hr class="m-10">
+
+    <!-- Expense rows -->
+    {% for expense in expenses %}
+    <div class="expense-row flex px-20 py-5 items-center space-x-40">
+        <span>{{ forloop.counter }}</span>
+        <span>{{ expense.name }}</span>
+        <span>${{ expense.amount|intcomma }}</span>
+        <span>{{ expense.category }}</span>
+        <span>{{ expense.date }}</span>
+        <span>
+            <a href="/edit/{{ expense.id }}">
+                <img class="h-5 inline-block" src="{% static 'myapp/images/edit.png' %}">
+            </a>
+        </span>
+        <span>
+            <a href="/delete/{{ expense.id }}">
+                <img class="h-5 inline-block" src="{% static 'myapp/images/delete.png' %}">
+            </a>
+        </span>
+    </div>
+    {% endfor %}
+
+    <div class="px-80 pt-5">
+        <span class="font-bold text-green-500 "> Total: ${{ total_expenses.amount__sum|intcomma }}</span>
+    </div>
+</div>
+<div class="flex mb-3">
+
+    <div class="w-1/4 shadow-lg ml-10 rounded-lg">
+        <h1 class= 'ml-10 font-bold text-gray-500'>Last 365 Days</h1>
+        <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">${{ yearly_sum.amount__sum|intcomma }}</h1>
+    </div>
+    <div class="w-1/4 shadow-lg ml-10 rounded-lg">
+        <h1 class= 'ml-10 font-bold text-gray-500'>Last 30 Days</h1>
+        <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">${{ monthly_sum.amount__sum|intcomma }}</h1>
+    </div>
+    <div class="w-1/4 shadow-lg ml-10 rounded-lg">
+        <h1 class= 'ml-10 font-bold text-gray-500'>Last 7 Days</h1>
+        <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">${{ weekly_sum.amount__sum|intcomma }}</h1>
+    </div>
+</div>
+<div class="flex">
+        <div class="w-1/2 shadow-lg m-10">
+            <div class="flex flex-wrap space-x-40 font-bold px-20 py-5">
+                <span>Past 30 Days sum Expenses</span>
+            </div>
+            <hr>
+            <div id="30-day-table">
+                {% for daily_sum in daily_sums %}
+                    <div class="flex flex-wrap px-20 py-3">
+                        <span>{{ daily_sum.date}}</span>
+                    </div>
+                    <div class="flex flex-wrap px-20 py-3">
+                        <span class="text-green-500">${{ daily_sum.sum|intcomma }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="w-1/2 shadow-lg m-10">
+            <div class="flex flex-wrap space-x-40 font-bold px-20 py-5">
+                <span>Expense Across Categories</span>
+            </div>
+            <hr>
+            <div id="category-sum-table">
+                {% for categorical_sum in categorical_sums %}
+                    <div class="flex-wrap px-20 py-3">
+                        <span>{{ categorical_sum.category}}</span>
+                    </div>
+                    <div class="flex flex-wrap px-20 py-3">
+                        <span class="text-green-500">${{ categorical_sum.sum|intcomma }}</span>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="flex">
+    <div class="w-1/2 shadow-lg ml-10">
+        <h1 class="m-10">
+            Expense Spread Across Categories
+        </h1>
+        <canvas id="myChart" class='m-10'>
+
+        </canvas>
+    </div>
+    <div class="w-1/2 shadow-lg ml-10">
+        <h1 class="m-10">
+            Expense across 30 Days
+        </h1>
+        <canvas id="30DayChart" class='m-10'>
+
+        </canvas>
+    </div>
+</div>
+<script>
+    var cats=[];
+    var amts=[];
+    const catSumDiv =document.getElementById('category-sum-table').getElementsByTagName('div');
+    for (var i=0; i < catSumDiv.length;i++){
+        if(i%2==1){
+            amts.push(catSumDiv[i].innerText.replace(/[$,]/g,""));
+        }else{
+            cats.push(catSumDiv[i].innerText);
+        }
+    }
+    console.log(cats);
+    console.log(amts);
+    var ctx=document.getElementById('myChart').getContext('2d');
+    var myChart= new Chart(ctx,{
+        type:'pie',
+        data:{
+            labels:cats,
+            datasets:[{
+                label: "Expense across Categories",
+                data: amts,
+            }]
+        }
+    }) 
+    var table_date=[];
+    var exp_amts=[];
+    const daySumDiv =document.getElementById('30-day-table').getElementsByTagName('div');
+    for (var i=0; i < daySumDiv.length;i++){
+        if(i%2==1){
+            exp_amts.push(daySumDiv[i].innerText.replace(/[$,]/g,""));
+        }else{
+            table_date.push(daySumDiv[i].innerText);
+        }
+    }
+    console.log(table_date);
+    console.log(exp_amts);
+    var ctxDay=document.getElementById('30DayChart').getContext('2d');
+    var dayChart= new Chart(ctxDay,{
+        type:'line',
+        data:{
+            labels:table_date,
+            datasets:[{
+                label: "Expense across 30 Days",
+                data: exp_amts,
+            }]
+        }
+    }) 
+</script>
+{% endblock %}

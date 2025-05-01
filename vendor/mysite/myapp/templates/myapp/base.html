@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+    <body>
+        <nav class="shadow-lg">
+            <div class="flex flex-wrap justify-between ml-5 items-center mx-auto px-5 py-2.5">
+                <a class="flex" href="/">
+                    <img class="h-9 mr-3" src="{% static 'myapp/images/logo.png' %}">
+                    <span class="self-center text-xl font semibold">Digital MarketPlace</span>
+                </a>
+                <div class="flex item-center" >
+                    <a class="mr-6 text-sm font-medium text-gray-500" href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                    <a class="mr-6 text-sm font-medium text-gray-500" href="">
+                        Sales
+                    </a>
+                    <a class="mr-6 text-sm font-medium text-gray-500" href="">
+                        Orders
+                    </a>
+                    <a class="mr-6 text-sm font-medium text-gray-500" href="{% url 'create' %}">
+                        Create Products
+                    </a>
+                    <a class="mr-6 text-sm font-medium text-gray-500" href="">
+                        My Purchases
+                    </a>
+                    {% if request.user.is_authenticated %}
+                            <a class="mr-6 text-sm font-medium text-gray-500" href="{% url 'logout' %}">Logout</a>
+                        {% else %}
+                            <a class="mr-6 text-sm font-medium text-gray-500" href="{% url 'login' %}">Login</a>
+                        {% endif %}
+                
+                       
+                </div>
+            </div>
+        </nav>
+       {% block body %}
+       {% endblock %}
+    </body>
+</html>

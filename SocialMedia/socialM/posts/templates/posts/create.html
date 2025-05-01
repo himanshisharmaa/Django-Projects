@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+{% block body %}
+<h2 class="text-2xl m-7 font-bold text-center">Create Post📸</h2>
+
+
+    {% comment %} <h1 class="text-2xl mt-3">Edit Profile Form</h1> {% endcomment %}
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md m-10  rounded px-8 pt-6 pb-8 mb-4">
+        {% csrf_token %}
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Add Title</label>
+            <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10">{{ form.title }}</div>
+            <p class="text-sm text-gray-500 mt-1">{{ form.title.help_text }}</p>
+            {{ form.title.errors }}
+        </div>
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image</label>
+            <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ form.image }}</div>
+            <p class="text-sm text-gray-500 mt-1">{{ form.image.help_text }}</p>
+            {{ form.image.errors }}
+        </div> 
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2"> Add Caption</label>
+            <div class="shadow  appearance-none text-gray-700 border rounded py-2 px-3 mr-10"> {{ form.caption }}</div>
+            <p class="text-sm text-gray-500 mt-1">{{ form.caption.help_text }}</p>
+            {{ form.caption.errors }}
+        </div> 
+        <button class="text-white bg-green-500 px-5 py-2 mt-2 " type="submit">Post</button>
+       
+    </form>
+{% endblock%}

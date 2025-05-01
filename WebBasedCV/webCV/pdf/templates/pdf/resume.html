@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Project</title>
+</head>
+<body>
+    <h2>{{ user_profile.name}}</h2>
+    <h2>{{ user_profile.email}}</h2>
+    <h2>{{ user_profile.phone}}</h2>
+    <hr/>
+    <br/>
+    <p><b>Summary</b></p>
+    <p>{{user_profile.summary}}</p>
+    <hr/>
+    <p><b>Skills</b></p>
+    <p>{{user_profile.skills}}</p>
+    <hr/>
+    <p><b>Education</b></p>
+    <ul>
+        <li>{{user_profile.school}}</li>
+        <li>{{user_profile.degree}} from {{user_profile.university}}</li>
+    </ul>
+    <hr/>
+    <p><b>Previous Work</b></p>
+    <p>{{user_profile.previous_work}}</p>
+</body>
+
+</html>

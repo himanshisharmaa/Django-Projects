@@ -1,0 +1,23 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% block body %}
+    <div class="product-container flex">
+        {% for product in products %}
+            <div class="product shadow-lg w-1/4 rounded-lg m-10">
+                <div class="product-image border h-64 w-64 p-2">
+                    {% comment %} <img class="h-full w-full"src="{{ product.file.url }}" onerror="this.onerror=null; this.src='{% static 'myapp/images/no_img.jpeg' %}';" alt=> {% endcomment %}
+                    <img class="h-full w-full"src="{% static 'myapp/images/no_img.jpeg' %}" alt="">
+
+                </div>
+                <div class="p-5">
+                    <div class="font-bold"> {{ product.name }}</div>
+                    <div class="text-green-700 font-bold"> $ {{ product.price }}</div>
+                    <div> {{ product.description }}</div>
+                    <div> Created By: {{ product.seller }}</div>
+                    <div class="mt-5"><a class="bg-blue-400 text-white px-4 py-2" href="/product/{{product.id}}/">View Details</a></div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock  %}
